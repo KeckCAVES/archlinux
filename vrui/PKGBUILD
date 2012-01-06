@@ -1,0 +1,47 @@
+# Maintainer: Braden Pellett <bpellett@ucdavis.edu>
+pkgname=vrui
+_pkgname=Vrui
+pkgver=2.2_003
+pkgrel=1
+epoch=
+pkgdesc="Virtual Reality User Interface library"
+arch=('x86_64' 'i686')
+url="http://keckcaves.org/software/vrui"
+license=('GPL')
+groups=('keckcaves')
+depends=('libx11' 'libgl' 'libusb' 'libpng' 'libjpeg' 'libtiff' 'alsa-lib' 'speex' 'openal' 'libtheora' 'bluez-libs')
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+for f in SpaceBall4000FLX.cfg SpaceNavigator.cfg SpaceTraveler.cfg VRDevices.cfg Vrui.cfg WingmanExtreme3DPro.cfg; do
+  backup+=("etc/$_pkgname-${pkgver%%_*}/$f")
+done
+options=()
+install=
+changelog=
+source=(http://www.idav.ucdavis.edu/~okreylos/ResDev/$_pkgname/$_pkgname-${pkgver//_/-}.tar.gz)
+noextract=()
+md5sums=('e894cfa8e021d130fc0f71802cb35635')
+_builddir=$srcdir/$_pkgname-${pkgver//_/-}
+
+
+build() {
+  cd "$_builddir"
+  make SYSTEM_HAVE_DC1394=0 LIBEXT=lib SYSTEMINSTALL=1 INSTALLDIR= 
+}
+
+check() {
+  cd "$_builddir"
+  return 0
+}
+
+package() {
+  cd "$_builddir"
+  make SYSTEM_HAVE_DC1394=0 LIBEXT=lib SYSTEMINSTALL=1 INSTALLDIR="$pkgdir" install
+}
+
+# vim:set ts=2 sw=2 et:

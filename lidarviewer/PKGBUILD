@@ -1,0 +1,46 @@
+# Maintainer: Braden Pellett <bpellett@ucdavis.edu>
+pkgname=lidarviewer
+_pkgname=LidarViewer
+pkgver=2.8
+_vruiver=2.2
+pkgrel=1
+epoch=
+pkgdesc="Immersive visualization application for 3D point cloud data"
+arch=('x86_64' 'i686')
+url="http://keckcaves.org/software/lidarviewer"
+license=('GPL')
+groups=('keckcaves')
+depends=('vrui>='$_vruiver)
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=(etc/$_pkgname-$pkgver/$_pkgname.cfg)
+options=()
+install=
+changelog=
+source=(http://stout.idav.ucdavis.edu/$_pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=('90d1cceba4ebea0e502f321ebf50f94e')
+_builddir=$srcdir/$_pkgname-$pkgver
+_makedir=/usr/share/Vrui-$_vruiver/make
+
+
+build() {
+  cd "$_builddir"
+  make VRUI_MAKEDIR="$_makedir" INSTALLDIR= EXECUTABLEINSTALLDIR=/usr/bin
+}
+
+check() {
+  cd "$_builddir"
+  return 0
+}
+
+package() {
+  cd "$_builddir"
+  make VRUI_MAKEDIR="$_makedir" INSTALLDIR="$pkgdir" EXECUTABLEINSTALLDIR="$pkgdir/usr/bin" install
+}
+
+# vim:set ts=2 sw=2 et:

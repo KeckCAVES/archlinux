@@ -1,0 +1,46 @@
+# Maintainer: Braden Pellett <bpellett@ucdavis.edu>
+pkgname=nck
+_pkgname=NCK
+pkgver=1.6
+_vruiver=2.2
+pkgrel=1
+epoch=
+pkgdesc="Interactive molecular dynamics simulation"
+arch=('x86_64' 'i686')
+url="http://keckcaves.org/software/nck"
+license=('GPL')
+groups=('keckcaves')
+depends=('vrui>='$_vruiver)
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=(etc/$_pkgname-$pkgver/$_pkgname.cfg)
+options=()
+install=
+changelog=
+source=(http://stout.idav.ucdavis.edu/$_pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=('a2588408d118f063940541937a82319a')
+_builddir=$srcdir/$_pkgname-$pkgver
+_makedir=/usr/share/Vrui-$_vruiver/make
+
+
+build() {
+  cd "$_builddir"
+  make VRUI_MAKEDIR="$_makedir" INSTALLDIR= EXECUTABLEINSTALLDIR=/usr/bin
+}
+
+check() {
+  cd "$_builddir"
+  return 0
+}
+
+package() {
+  cd "$_builddir"
+  make VRUI_MAKEDIR="$_makedir" INSTALLDIR="$pkgdir" EXECUTABLEINSTALLDIR="$pkgdir/usr/bin" install
+}
+
+# vim:set ts=2 sw=2 et:

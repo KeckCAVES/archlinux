@@ -1,0 +1,47 @@
+# Maintainer: Braden Pellett <bpellett@ucdavis.edu>
+pkgname=3dvisualizer
+_pkgname=3DVisualizer
+pkgver=1.9
+_vruiver=2.2
+pkgrel=1
+epoch=
+pkgdesc="Exploration of gridded data in immersive virtual reality environments"
+arch=('x86_64' 'i686')
+url="http://keckcaves.org/software/3dvisualizer"
+license=('GPL')
+groups=('keckcaves')
+depends=('vrui>='$_vruiver)
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=(http://stout.idav.ucdavis.edu/$_pkgname-$pkgver.tar.gz)
+noextract=()
+md5sums=('b2bacfac06a30275a27e41ff14442540')
+_builddir=$srcdir/$_pkgname-$pkgver
+_makedir=/usr/share/Vrui-$_vruiver/make
+
+
+build() {
+  cd "$_builddir"
+  sed -i.bak 's/UNSUPPORTED_MODULE_NAMES =/MODULE_NAMES +=/' makefile
+  make VRUI_MAKEDIR="$_makedir" LIBEXT=lib INSTALLDIR=/usr
+}
+
+check() {
+  cd "$_builddir"
+  return 0
+}
+
+package() {
+  cd "$_builddir"
+  make VRUI_MAKEDIR="$_makedir" LIBEXT=lib INSTALLDIR="$pkgdir/usr" install
+}
+
+# vim:set ts=2 sw=2 et:
