@@ -33,11 +33,6 @@ build() {
   make VRUI_MAKEDIR="$_makedir" INSTALLDIR= EXECUTABLEINSTALLDIR=/usr/bin
 }
 
-check() {
-  cd "$_builddir"
-  return 0
-}
-
 package() {
   cd "$_builddir"
   make VRUI_MAKEDIR="$_makedir" INSTALLDIR="$pkgdir" EXECUTABLEINSTALLDIR="$pkgdir/usr/bin" install

@@ -34,11 +34,6 @@ build() {
   make VRUI_MAKEDIR="$_makedir" LIBEXT=lib INSTALLDIR=/usr
 }
 
-check() {
-  cd "$_builddir"
-  return 0
-}
-
 package() {
   cd "$_builddir"
   make VRUI_MAKEDIR="$_makedir" LIBEXT=lib INSTALLDIR="$pkgdir/usr" install

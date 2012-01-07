@@ -34,11 +34,6 @@ build() {
   make SYSTEM_HAVE_DC1394=0 LIBEXT=lib SYSTEMINSTALL=1 INSTALLDIR= 
 }
 
-check() {
-  cd "$_builddir"
-  return 0
-}
-
 package() {
   cd "$_builddir"
   make SYSTEM_HAVE_DC1394=0 LIBEXT=lib SYSTEMINSTALL=1 INSTALLDIR="$pkgdir" install
