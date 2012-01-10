@@ -1,0 +1,49 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+DAEMON=VRDeviceDaemon
+ARGS=
+
+[ -r /etc/conf.d/$DAEMON ] && . /etc/conf.d/$DAEMON
+
+PID=$(get_pid $DAEMON)
+
+case "$1" in
+  start)
+    stat_busy "Starting $DAEMON"
+    [ -z "$PID" ] && { $DAEMON $ARGS |& logger -p daemon.info -t $DAEMON & }
+    if [ $? = 0 ]; then
+      add_daemon $DAEMON
+      stat_done
+    else
+      stat_fail
+      exit 1
+    fi
+    ;;
+  stop)
+    stat_busy "Stopping $DAEMON"
+    [ -n "$PID" ] && kill $PID &>/dev/null
+    if [ $? = 0 ]; then
+      rm_daemon $DAEMON
+      stat_done
+    else
+      stat_fail
+      exit 1
+    fi
+    ;;
+  restart)
+    $0 stop
+    while [ -n "$(get_pid $DAEMON)" ]; do
+      sleep 1
+    done
+    $0 start
+    ;;
+  status)
+    stat_busy "Checking VRDeviceDaemon status"
+    ck_status $DAEMON
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart|status}"
+esac
