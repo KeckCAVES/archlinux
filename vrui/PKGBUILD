@@ -16,16 +16,20 @@ optdepends=()
 provides=()
 conflicts=()
 replaces=()
-backup=()
+backup=('etc/rc.d/VRDeviceDaemon' 'etc/conf.d/VRDeviceDaemon')
 for f in SpaceBall4000FLX.cfg SpaceNavigator.cfg SpaceTraveler.cfg VRDevices.cfg Vrui.cfg WingmanExtreme3DPro.cfg; do
   backup+=("etc/$_pkgname-${pkgver%%_*}/$f")
 done
 options=()
 install=
 changelog=
-source=(http://www.idav.ucdavis.edu/~okreylos/ResDev/$_pkgname/$_pkgname-${pkgver//_/-}.tar.gz)
+source=(http://www.idav.ucdavis.edu/~okreylos/ResDev/$_pkgname/$_pkgname-${pkgver//_/-}.tar.gz
+        VRDeviceDaemon
+        VRDeviceDaemon.confd)
 noextract=()
-md5sums=('e894cfa8e021d130fc0f71802cb35635')
+md5sums=('e894cfa8e021d130fc0f71802cb35635'
+         '26b7040db2d2ba7b6d1788a4cf32c358'
+         'f9dd133a8568c5a7b5d634ade2a1d139')
 _builddir=$srcdir/$_pkgname-${pkgver//_/-}
 
 
@@ -37,6 +41,8 @@ build() {
 package() {
   cd "$_builddir"
   make SYSTEM_HAVE_DC1394=0 LIBEXT=lib SYSTEMINSTALL=1 INSTALLDIR="$pkgdir" install
+  install -D -m755 "$srcdir/VRDeviceDaemon" "$pkgdir/etc/rc.d/VRDeviceDaemon"
+  install -D -m644 "$srcdir/VRDeviceDaemon.confd" "$pkgdir/etc/conf.d/VRDeviceDaemon"
 }
 
 # vim:set ts=2 sw=2 et:
